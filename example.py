@@ -1,15 +1,45 @@
-import time
-from datetime import datetime, timedelta
-format_time_start_work = datetime.strptime('10:00:00', '%H:%M:%S')
-time_delta = timedelta(minutes=60)
-list_of_time = [(format_time_start_work + (time_delta * i)).time() for i in range(0, 11)]
+import psycopg2
+from psycopg2 import sql
+from psycopg2.extras import DictCursor
 
-t = '12:00:00'
-format_time_start_work_1 = datetime.strptime(t, '%H:%M:%S').time()
-list_of_time.remove(format_time_start_work_1)
+def connect_bd(dbname='barbershop', user='postgres',
+                            password='1524'):
+    conn = psycopg2.connect(dbname=dbname, user=user,
+                            password=password, host='localhost')
+    return conn
 
-print(list_of_time)
+def show_table(name_table):
+    conn = connect_bd()
+    with conn.cursor(cursor_factory=DictCursor) as cursor:
+        cursor.execute('SELECT * FROM '+ name_table)
+        for row in cursor:
+            print(row)
+    conn.close()
+
+def add_to_cliets(*args):
+    conn = connect_bd()
+    with conn.cursor() as cursor:
+        conn.autocommit = True
+        values = list(args)
+        cursor.execute('select id from masters where name = %s', (values[-1],))
+        name = cursor.fetchone()[0]
+        values[-1] = name
+        values = [tuple(values)]
+        insert = sql.SQL('INSERT INTO clientsbarber (nameclient, telephone,date_of_record, id_master) VALUES {}').format(
+            sql.SQL(',').join(map(sql.Literal, values))
+        )
+        cursor.execute(insert)
+    conn.close()
+
+    # print(args[-1])
+
+    # with conn.cursor() as cursor:
+    #     conn.autocommit = True
+        # insert = sql.SQL('INSERT INTO clientsbarber (nameclient, telephone, id_master) VALUES {}').format(
+        #     sql.SQL(',').join(map(sql.Literal, values))
+        # )
+        # cursor.execute(insert)
+    # conn.close()
 
 
-# a = datetime.now()
-# c = a +b
+add_to_cliets('name','12345','2021-01-01 12:20:00','Alisa')
