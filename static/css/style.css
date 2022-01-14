@@ -1,4 +1,5 @@
+select {
+    width: 50px;
+   }
 
-.form-control {width : 140px;}
-
-table {text-align: center;}
+nav {background-color: #e3f2fd;}
