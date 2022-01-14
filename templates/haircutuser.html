@@ -1,42 +1,42 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-<nav class="navbar navbar-light" style="background-color: #e3f2fd;">
-    <div class="container-fluid">
-        <a class="navbar-brand"><em>Welcome to our barbershop</em></a>
-    </div>
-</nav>
 <div>
-    <p class="lead">
+    <p class="lead text-center">
         We are glad to welcome you in our barbershop. Today {{data_about_time_workers.datenow}} time :
         {{data_about_time_workers.timenow}}. Choose a convenient time for you to record
     </p>
 </div>
 
-<form method="post" action="/">
+<form method="post" action="/createrecord">
     <div class="row mb-3">
         <label for="select_master" class="col-sm-2 col-form-label">Выберите мастера:</label>
         <select class="form-select form-select-lg mb-3" id="select_master" name="select_master"
-                aria-label=".form-select-lg ">
+                aria-label=".form-select-lg "  style="width: 200px" required>
             <option selected>...</option>
             {% for name_hairdressers in data_about_time_workers.names_hairdressers %}
-                <option value="{{name_hairdressers}}">{{name_hairdressers}}</option>
+            <option value="{{name_hairdressers}}">{{name_hairdressers}}</option>
             {% endfor %}
         </select>
     </div>
     <div class="row mb-3">
         <label for="select_time" class="col-sm-2 col-form-label">Выберите время:</label>
-        <select class="form-select form-select-lg mb-3" id="select_time" name="select_time" aria-label=".form-select-lg ">
+        <select class="form-select form-select-lg mb-3" style="width: 200px" id="select_time" name="select_time"
+                aria-label=".form-select-lg " required>
             <option selected>...</option>
             {% for time in list_of_time%}
-                <option value="{{time}}">{{time}}</option>
+            <option value="{{time}}">{{time}}</option>
             {% endfor %}
         </select>
     </div>
-    <input type="date" class="form-control" id="date" name="date" placeholder="Дата" value="daterecord" required>
-    <button type="submit" formmethod="post" class="btn btn-outline-success">Success</button>
+    <div class="row mb-3">
+    <label for="date" class="col-sm-2 col-form-label">Выберите дату:</label>
+    <input style="width: 200px" type="date" class="form-control" id="date" name="date" placeholder="Дата" value="daterecord" required>
+    </div>
+    <button type = "submit" class="btn btn-lg btn-primary" >Success
+    </button>
 
 </form>
+
 
 {% endblock %}
