@@ -31,6 +31,8 @@ def add_to_cliets(*args):
         cursor.execute(insert)
     conn.close()
 
+show_table('clientsbarber')
+
     # print(args[-1])
 
     # with conn.cursor() as cursor:
@@ -40,6 +42,26 @@ def add_to_cliets(*args):
         # )
         # cursor.execute(insert)
     # conn.close()
+#
+#
+# add_to_cliets('name','12345','2021-01-01 12:20:00','Alisa')
+# from datetime import datetime, timedelta
+# #
+#
+# def create_list_of_time(time_start_work):
+#     format_time_start_work = datetime.strptime(time_start_work, '%H:%M:%S.%f')
+#     time_delta = timedelta(minutes=60)
+#     list_of_time = [(format_time_start_work + (time_delta * i)).time() for i in range(0, 11)]
+#     return list_of_time
+#
+# li=create_list_of_time('10:00:00.00')
+# # print(li)
+#
+#
+# # li.remove(format_time_start_work)
+# # print(li)
 
 
-add_to_cliets('name','12345','2021-01-01 12:20:00','Alisa')
+
+
+
