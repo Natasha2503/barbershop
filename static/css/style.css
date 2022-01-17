@@ -1,5 +1,41 @@
-select {
-    width: 50px;
-   }
 
 nav {background-color: #e3f2fd;}
+
+.container {
+    margin-top: 4rem;
+    width: 70%!important;
+}
+.container-record{
+    margin-top: 4rem;
+    text-align: center;
+}
+
+.container-message {
+    margin-top: 4rem;
+    text-align: center;
+}
+p {
+    color: #ed2424;
+    }
+
+.button-back {
+ position: fixed;
+  bottom: 48px;
+  right: 48px;
+}
+.mytable td, th {
+    text-align: center; /* Выравнивание по центру */
+    padding: 3px; /* Поля вокруг текста */
+    max-width: 300px;
+    min-width:200px;
+   }
+.mytable{
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+
+
+
+
