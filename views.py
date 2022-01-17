@@ -1,12 +1,13 @@
 import random
 from datetime import datetime, timedelta
 
-from flask import Flask, render_template, request, flash, redirect, url_for
+from flask import render_template, request, flash, redirect
 
+from log import LogInfo
 from init_db import show_table, add_to_cliets, check_time_records, show_records_to_masters
+from main import create_app
 
-from root import create_app
-
+app = create_app()
 
 
 def create_dict_of_params():
@@ -47,39 +48,57 @@ def dict_records_for_masters():
     return dict_masters
 
 
-@app.route('/haitcut', methods=['get', 'post'])
+@app.route('/')
+def mainWeb():
+    LogInfo.log.info(" ok ")
+    try:
+        user_id = random.randint(1, 1000)
+        return render_template('mainpage.html', user_id=user_id)
+    except Exception as e:
+        LogInfo.log.error(e)
+
+
+@app.route('/haircut', methods=['GET', 'POST'])
 def main_web_1():
-    if request.method == 'GET':
-        data_about_time_workers = create_dict_of_params()
-        list_of_time = create_list_of_time('10:00:00.00')
-        return render_template('haircutuser.html', data_about_time_workers=data_about_time_workers,
-                               list_of_time=list_of_time)
-    if request.method == 'POST':
-        select_master = request.form.get('select_master')
-        select_time = request.form.get('select_time')
-        select_date = request.form.get('datep')
-        name_client = request.form.get('nameclients')
-        number_client = request.form.get('number')
-        date_record = datetime.strptime(' '.join([select_date, select_time]), '%Y-%m-%d %H:%M:%S')
-        check_times = check_time(select_time, select_date, select_master)
-        if check_times:
-            flash('This time is busy. Select, please, other time or date or master')
-            return redirect('/haircut')
-        else:
-            add_to_cliets(name_client, number_client, date_record, select_master)
-            return render_template('record.html', select_time=select_time, select_master=select_master,
+    try:
+        if request.method == 'GET':
+            LogInfo.log.info('ok')
+            data_about_time_workers = create_dict_of_params()
+            list_of_time = create_list_of_time('10:00:00.00')
+            return render_template('haircutuser.html', data_about_time_workers=data_about_time_workers,
+                                   list_of_time=list_of_time)
+        if request.method == 'POST':
+            LogInfo.log.info('ok')
+            select_master = request.form.get('select_master')
+            select_time = request.form.get('select_time')
+            select_date = request.form.get('datep')
+            name_client = request.form.get('nameclients')
+            number_client = request.form.get('number')
+            date_record = datetime.strptime(' '.join([select_date, select_time]), '%Y-%m-%d %H:%M:%S')
+            check_times = check_time(select_time, select_date, select_master)
+            if check_times:
+                flash('This time is busy. Select, please, other time or date or master')
+                return redirect('/haircut')
+            else:
+                add_to_cliets(name_client, number_client, date_record, select_master)
+                return render_template('record.html', select_time=select_time, select_master=select_master,
                                    select_date=select_date, name_client=name_client)
+    except Exception as e:
+        LogInfo.log.error(e)
 
 
 @app.route('/formasters')
 def for_masters():
-    records_masters = dict_records_for_masters()
+    try:
+        LogInfo.log.info('ok')
+        records_masters = dict_records_for_masters()
+        return render_template('hairdresser.html',
+                           records_masters=records_masters)
 
-    return render_template('hairdresser.html',
-                           records_masters=records_masters
-                           )
+    except Exception as e:
+        LogInfo.log.error(e)
+
 
 
 if __name__ == '__main__':
-    app = create_app()
     app.run(debug=True)
