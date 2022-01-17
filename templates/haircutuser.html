@@ -1,95 +1,77 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div>
-    <p class="lead text-center">
+<div class="container-nav">
+    <h1 class="lead text-center">
         We are glad to welcome you in our barbershop. Today {{data_about_time_workers.datenow}} time :
         {{data_about_time_workers.timenow}}. Choose a convenient time for you to record
-    </p>
+    </h1>
 </div>
-<!--#select_master-->
-<!--#select_time-->
-<!--#datep-->
-<!--#nameclients-->
-<!--#number-->
-
-
-<form id="mainform" method="post" action="/haircut">
-    <div class="row mb-3">
-        <label for="select_master" class="col-sm-2 col-form-label">Выберите мастера:</label>
-        <select class="form-select form-select-lg mb-3" id="select_master" name="select_master"
-                aria-label=".form-select-lg " style="width: 200px" required>
-            {% for name_hairdressers in data_about_time_workers.names_hairdressers %}
-            <option value="{{name_hairdressers}}">{{name_hairdressers}}</option>
-            {% endfor %}
-        </select>
-    </div>
-    <div class="row mb-3">
-        <label for="select_time" class="col-sm-2 col-form-label">Выберите время:</label>
-        <select class="form-select form-select-lg mb-3" style="width: 200px" id="select_time" name="select_time"
-                aria-label=".form-select-lg ">
-            {% for time in list_of_time%}
-            <option value="{{time}}">{{time}}</option>
-            {% endfor %}
-        </select>
-    </div>
-    <div class="row mb-3">
-        <label for="datep" class="col-sm-2 col-form-label">Выберите дату:</label>
-        <input style="width: 200px" class="form-control" id="datep" name="datep" placeholder="Дата">
-    </div>
-
-
-    <button id="btn" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal"> Open modal
-    </button>
-    <div class="modal" id="myModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <h4 class="modal-title">Modal Heading</h4>
-                    <button type="button" class="close" data-dismiss="modal">×</button>
-                </div>
-
-                <div class="modal-body">
-                    <form>
-                        <div class="row gy-5">
-                            <div class="col-md-6">
-                                <label for="nameclients" class="form-label">Your name</label>
-                                <input type="text" class="form-control" name="nameclients" id="nameclients"
-                                       pattern="^[a-zA-Zа-яА-я]+$" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="number" class="form-label">Phone number</label>
-                                <input type="number" class="form-control" id="number" name="number" pattern="^[0-9]+$"
-                                       required>
-                            </div>
-
-                            <div class="col-md-6">
-                                <button type="submit" class="btn btn-primary mr-1">record
-                                </button>
-                                <button type="button" class="btn btn-danger mr-1" data-dismiss="modal">Close</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-
-            </div>
+<div class="container-message">
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<div class="flashes">
+    {% for message in messages %}
+    <p>{{ message }}</p>
+    {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+</div>
+<div class="container">
+    <form id="mainform" method="post" action="/haircut">
+        <div class="row mb-3">
+            <label for="select_master" class="col-form-label">Выберите мастера:</label>
+            <select class="form-select mb-3" id="select_master" name="select_master"
+                    aria-label=".form-select-lg " required>
+                {% for name_hairdressers in data_about_time_workers.names_hairdressers %}
+                    <option value="{{name_hairdressers}}">{{name_hairdressers}}</option>
+                {% endfor %}
+            </select>
         </div>
-    </div>
-</form>
+        <div class="row mb-3">
+            <label for="select_time" class="col-form-label">Выберите время:</label>
+            <select class="form-select mb-3" id="select_time" name="select_time"
+                    aria-label=".form-select-lg ">
+                {% for time in list_of_time%}
+                    <option value="{{time}}">{{time}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="row mb-3">
+            <label for="datep" class="col-form-label">Выберите дату:</label>
+            <input class="form-control" id="datep" name="datep">
+        </div>
+        <div class="row mb-3">
+            <label for="nameclients" class="col-form-label">Your name</label>
+            <input type="text" class="form-control" name="nameclients" id="nameclients"
+                   pattern="^[a-zA-Zа-яА-я]+$" required>
 
+        </div>
+        <div class="row mb-3">
+            <label for="number" class="col-form-label">Phone number</label>
+            <input class="form-control" id="number" name="number" pattern="^[0-9]{11}$"
+                   required>
+        </div>
+        <div class="row mb-6">
+        <button id="btn" type="submit" class="btn btn-primary col-sm-2"> Save
+        </button>
+            </div>
+    </form>
+</div>
 <script>
 
 $(function() {
     $.datepicker.setDefaults($.datepicker.regional['ru']);
-    $.datepicker.formatDate( "yyyy-mm-dd");
     $('#datep').datepicker({
+        dateFormat: "yy-mm-dd",
 	    defaultDate: null,
 	    minDate: "0",
 	    beforeShowDay: $.datepicker.noWeekends
 
 	});
 	});
+
 
 
 </script>

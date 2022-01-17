@@ -1,6 +1,30 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div class="mytable">
+    <table class="table table-bordered align-middle">
+        <tbody>
+{% for name in records_masters.keys()%}
+        <tr>
+            <td rowspan="3" style="width: 300px">{{name}}</td>
+            {% for param in records_masters[name] %}
+            <td>{{param[0]}}</td>
+            {% endfor %}
+        </tr>
+        <tr>
+            {% for param in records_masters[name] %}
+            <td>{{param[1]}}</td>
+            {% endfor %}
+        </tr>
+        <tr>
+            {% for param in records_masters[name] %}
+            <td>{{param[2]}}</td>
+            {% endfor %}
+        </tr>
+{% endfor %}
+        </tbody>
+    </table>
+</div>
 
 
 {% endblock %}

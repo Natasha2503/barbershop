@@ -1,7 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container">
+<div class="container-record">
 <h3>{{name_client}}, you have successfully signed up for a haircut on {{select_date}} at {{select_time}} to master {{select_master}} </h3>
+    <div class="row mb-6">
+        <a class="button-back" href="/haircut" type="button"> to the main page
+        </a>
+            </div>
 </div>
 {% endblock %}
